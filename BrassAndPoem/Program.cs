@@ -74,7 +74,7 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
     foreach (var product in store)
     {
         Console.WriteLine($@"  {count}. {product.Name}:  ${product.Price}
-  {product.ProductType.Title}");
+  {product.ProductType.Title} Item ID:{product.ID} ");
         count++;
     }
     Console.ReadKey();
@@ -82,15 +82,79 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
 
 void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
-    Console.WriteLine("Comin' soon Hun'");
+    while (true)
+    {
+
+
+        Console.WriteLine("Enter the number of the product to delete, or enter q to return");
+        for (int i = 0; i < products.Count; i++)
+        {
+            Console.WriteLine($"{i}. {products[i].Name}");
+        }
+        string input = Console.ReadLine().ToLower().Trim();
+
+        if (input == "q")
+        {
+            return;
+        }
+
+        if (int.TryParse(input, out int index) && index >= 0 && index < products.Count)
+        {
+            Console.WriteLine($"{products[index].Name} was deleted.");
+            products.RemoveAt(index);
+            Console.WriteLine("press any key to continue");
+            Console.ReadKey();
+            return;
+        }
+        else
+        {
+            Console.WriteLine("No. Please enter a valid number, or q.");
+            Console.ReadKey();
+        }
+    }
 }
 
 void AddProduct(List<Product> products, List<ProductType> productTypes)
 {
-    Console.WriteLine("Comin' soon Hun'");
+    Console.WriteLine("Enter Product details: Product's name?");
+    string name = Console.ReadLine();
+
+    Console.WriteLine("Enter Product details: Product's price?");
+    decimal price;
+    while (!decimal.TryParse(Console.ReadLine(), out price))
+    {
+        Console.WriteLine("that is not a valid number please enter a format of 0.00");
+    }
+
+    List<int> usedIds = products.Select(product => product.ID).ToList();
+    int ID = 1;
+    while (usedIds.Contains(ID))
+    {
+        ID++;
+        Console.WriteLine(ID);
+    }
+
+
+    Console.WriteLine("Enter the number of the item's type.");
+    for (int i = 0; i < productTypes.Count; i++)
+    {
+        Console.WriteLine($"  {i}: {productTypes[i].Title}");
+    }
+
+    int typeIndex;
+    while (!int.TryParse(Console.ReadLine(), out typeIndex) || typeIndex < 0 || typeIndex >= productType.Count)
+    {
+        Console.WriteLine("Try again.");
+    }
+
+    Product newProduct = new(name, price, ID, productType[typeIndex]);
+    products.Add(newProduct);
+    Console.WriteLine($" {newProduct.Name} has been added");
+    Console.WriteLine($"  press any key to continue");
+    Console.ReadKey();
 }
 
-void UpdateProduct(List<Product> products, List<ProductType> productTypes)
+    void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
     Console.WriteLine("Comin' soon Hun'");
 }
