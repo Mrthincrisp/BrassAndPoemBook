@@ -7,7 +7,7 @@
                 },
                 new ProductType()
                 {
-                    Title = "Poem Book",
+                    Title = "Poetry Book",
                     ID = 2
                 }
             };
@@ -53,7 +53,7 @@ void DisplayMenu()
                 UpdateProduct(products, productType);
                 break;
             case "5":
-                Console.WriteLine("Later Tater");
+                Console.WriteLine("Later Tater~");
                 Console.ReadKey();
                 break;
             default:
@@ -73,8 +73,8 @@ void DisplayAllProducts(List<Product> products, List<ProductType> productTypes)
     int count = 1;
     foreach (var product in store)
     {
-        Console.WriteLine($@"  {count}. {product.Name}:  ${product.Price}
-  {product.ProductType.Title} Item ID:{product.ID} ");
+        Console.WriteLine($@"  {count}. {product.Name} is a {product.ProductType.Title}:
+        ${product.Price} Item ID:{product.ID} ");
         count++;
     }
     Console.ReadKey();
@@ -84,12 +84,10 @@ void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 {
     while (true)
     {
-
-
         Console.WriteLine("Enter the number of the product to delete, or enter q to return");
         for (int i = 0; i < products.Count; i++)
         {
-            Console.WriteLine($"{i}. {products[i].Name}");
+            Console.WriteLine($" {i}. {products[i].Name}");
         }
         string input = Console.ReadLine().ToLower().Trim();
 
@@ -100,15 +98,16 @@ void DeleteProduct(List<Product> products, List<ProductType> productTypes)
 
         if (int.TryParse(input, out int index) && index >= 0 && index < products.Count)
         {
-            Console.WriteLine($"{products[index].Name} was deleted.");
+            Console.WriteLine($" {products[index].Name} was deleted.");
             products.RemoveAt(index);
-            Console.WriteLine("press any key to continue");
+            Console.WriteLine(" Press any key to continue.");
             Console.ReadKey();
             return;
         }
         else
         {
-            Console.WriteLine("No. Please enter a valid number, or q.");
+            Console.WriteLine("No. Enter a valid number, or q.");
+            Console.WriteLine(" Press any key to continue.");
             Console.ReadKey();
         }
     }
@@ -131,7 +130,6 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
     while (usedIds.Contains(ID))
     {
         ID++;
-        Console.WriteLine(ID);
     }
 
 
@@ -149,16 +147,63 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
 
     Product newProduct = new(name, price, ID, productType[typeIndex]);
     products.Add(newProduct);
-    Console.WriteLine($" {newProduct.Name} has been added");
-    Console.WriteLine($"  press any key to continue");
+    Console.WriteLine($"{newProduct.Name} has been added");
+    Console.WriteLine($" Press any key to continue.");
     Console.ReadKey();
 }
 
     void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    Console.WriteLine("Comin' soon Hun'");
-}
+    Console.WriteLine(" Select a product's number to update, or enter q, to return to the main menu:");
+    for (int i = 0; i < products.Count; i++)
+    {
+        Console.WriteLine($"  {i}. {products[i].Name}");
+    }
+    string? input = Console.ReadLine();
+    if (input == "q")
+    {
+        return;
+    }
+    else if (int.TryParse(input, out int index) && index >= 0 && index < products.Count)
+    {
+        Console.WriteLine($"Enter the new name of product: {products[index].Name}, or press enter to leave unchanged");
+        string newName = Console.ReadLine();
+        if (string.IsNullOrEmpty(newName))
+        {
+            newName = products[index].Name;
+        }
 
+
+        Console.WriteLine("Enter the price of the product");
+        decimal newPrice;
+        while (!decimal.TryParse(Console.ReadLine().Trim(), out newPrice))
+        {
+            Console.WriteLine("Wrong try again.");
+        }
+        newPrice = Math.Round(newPrice, 2);
+
+        Console.WriteLine("enter the product's type number.");
+        for (int i = 0; i < productType.Count; i++)
+        {
+            Console.WriteLine($"   {i}: {productType[i].Title}");
+        }
+
+        int newTypeIndex;
+        while (!int.TryParse(Console.ReadLine(), out newTypeIndex) || newTypeIndex < 0 || newTypeIndex >= productType.Count)
+        {
+            Console.WriteLine("try again... Just a 0 or 1");
+        }
+
+        products[index].Name = newName;
+        products[index].Price = newPrice;
+        products[index].ProductType = productType[newTypeIndex];
+
+        Console.WriteLine($"{newName} has been updated");
+        Console.WriteLine("  press any key to continue");
+        Console.ReadKey();
+
+    }
+}
 void Text()
 {
     Console.WriteLine(@"
